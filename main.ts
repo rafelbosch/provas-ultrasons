@@ -6,6 +6,7 @@ function Coreografia () {
     Part2()
     coreografia_part = 13
     radio.sendNumber(coreografia_part)
+    Coreo13()
     part1()
     coreografia_part = 14
     Part3()
@@ -108,6 +109,40 @@ function par4 () {
     music.playTone(659, music.beat(BeatFraction.Double))
     music.rest(music.beat(BeatFraction.Sixteenth))
 }
+function part6_llarc () {
+    music.playTone(659, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(740, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(659, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(784, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(784, music.beat(BeatFraction.Half))
+    music.playTone(784, music.beat(BeatFraction.Quarter))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(784, music.beat(BeatFraction.Quarter))
+    music.rest(music.beat(BeatFraction.Sixteenth))
+    music.playTone(784, music.beat(BeatFraction.Double))
+    music.playTone(784, music.beat(BeatFraction.Double))
+}
+function Coreo13 () {
+    velmotor = 30
+    maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, velmotor)
+    while (maqueen.Ultrasonic(PingUnit.Centimeters) > 8) {
+        if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
+            maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 200)
+        } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 1 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
+            maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
+            maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 10)
+        } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 1) {
+            maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 10)
+            maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
+        }
+    }
+}
 function Part2 () {
     music.playTone(494, music.beat(BeatFraction.Half))
     music.rest(music.beat(BeatFraction.Sixteenth))
@@ -138,25 +173,6 @@ function Part2 () {
 input.onButtonPressed(Button.B, function () {
     Coreografia()
 })
-function part6_llarc () {
-    music.playTone(659, music.beat(BeatFraction.Whole))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(740, music.beat(BeatFraction.Whole))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(659, music.beat(BeatFraction.Whole))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(587, music.beat(BeatFraction.Whole))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(784, music.beat(BeatFraction.Whole))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(784, music.beat(BeatFraction.Half))
-    music.playTone(784, music.beat(BeatFraction.Quarter))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(784, music.beat(BeatFraction.Quarter))
-    music.rest(music.beat(BeatFraction.Sixteenth))
-    music.playTone(784, music.beat(BeatFraction.Double))
-    music.playTone(784, music.beat(BeatFraction.Double))
-}
 function Part3 () {
     music.playTone(494, music.beat(BeatFraction.Half))
     music.rest(music.beat(BeatFraction.Sixteenth))
@@ -202,6 +218,7 @@ function part1 () {
     music.playTone(494, music.beat(BeatFraction.Half))
     music.rest(music.beat(BeatFraction.Sixteenth))
 }
+let velmotor = 0
 let perseguir = 0
 let distancia = 0
 let Encontrado = 0
@@ -210,7 +227,7 @@ coreografia_part += 0
 radio.setGroup(101)
 basic.pause(2000)
 while (!(Encontrado)) {
-    distancia = maqueen.Ultrasonic(PingUnit.Centimeters)
+    distancia = 0
     if (distancia < 30) {
         Encontrado = 1
     }
