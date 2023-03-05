@@ -1,27 +1,25 @@
 function Coreografia () {
     coreografia_part = 11
-    radio.sendNumber(coreografia_part)
     part1()
     coreografia_part = 12
     Part2()
     coreografia_part = 13
-    radio.sendNumber(coreografia_part)
-    Coreo13()
+    radio.sendString("C" + convertToText(coreografia_part))
     part1()
     coreografia_part = 14
     Part3()
     coreografia_part = 15
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     par4()
     coreografia_part = 16
     part5()
     coreografia_part = 17
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     par4()
     coreografia_part = 18
     part6()
     coreografia_part = 21
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     part1()
     coreografia_part = 22
     Part2()
@@ -30,7 +28,7 @@ function Coreografia () {
     coreografia_part = 24
     Part3()
     coreografia_part = 25
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     par4()
     coreografia_part = 26
     part5()
@@ -39,27 +37,28 @@ function Coreografia () {
     coreografia_part = 28
     part6()
     coreografia_part = 31
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     part1()
     coreografia_part = 32
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     Part2()
     coreografia_part = 33
     part1()
     coreografia_part = 34
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     Part3()
     coreografia_part = 35
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     par4()
     coreografia_part = 36
     part5()
     coreografia_part = 37
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     par4()
     coreografia_part = 38
-    radio.sendNumber(coreografia_part)
+    radio.sendString("C" + convertToText(coreografia_part))
     part6_llarc()
+    radio.sendString("fi")
 }
 function part5 () {
     music.playTone(587, music.beat(BeatFraction.Whole))
@@ -75,6 +74,10 @@ function part5 () {
     music.playTone(494, music.beat(BeatFraction.Whole))
     music.rest(music.beat(BeatFraction.Whole))
 }
+input.onButtonPressed(Button.A, function () {
+    music.setVolume(204)
+    Coreografia()
+})
 function part6 () {
     music.playTone(659, music.beat(BeatFraction.Whole))
     music.rest(music.beat(BeatFraction.Sixteenth))
@@ -128,21 +131,6 @@ function part6_llarc () {
     music.playTone(784, music.beat(BeatFraction.Double))
     music.playTone(784, music.beat(BeatFraction.Double))
 }
-function Coreo13 () {
-    velmotor = 30
-    maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, velmotor)
-    while (maqueen.Ultrasonic(PingUnit.Centimeters) > 8) {
-        if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
-            maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 200)
-        } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 1 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
-            maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
-            maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 10)
-        } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 1) {
-            maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 10)
-            maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
-        }
-    }
-}
 function Part2 () {
     music.playTone(494, music.beat(BeatFraction.Half))
     music.rest(music.beat(BeatFraction.Sixteenth))
@@ -170,8 +158,18 @@ function Part2 () {
     music.playTone(587, music.beat(BeatFraction.Half))
     music.rest(music.beat(BeatFraction.Whole))
 }
+radio.onReceivedString(function (receivedString) {
+    basic.showString(receivedString)
+})
 input.onButtonPressed(Button.B, function () {
-    Coreografia()
+    for (let index = 0; index <= 2; index++) {
+        for (let index2 = 0; index2 <= 7; index2++) {
+            coreografia_part = index * 10 + index2 + 11
+            radio.sendString("C" + convertToText(coreografia_part))
+            basic.pause(4900)
+        }
+    }
+    radio.sendString("fi")
 })
 function Part3 () {
     music.playTone(494, music.beat(BeatFraction.Half))
@@ -218,28 +216,13 @@ function part1 () {
     music.playTone(494, music.beat(BeatFraction.Half))
     music.rest(music.beat(BeatFraction.Sixteenth))
 }
-let velmotor = 0
-let perseguir = 0
-let distancia = 0
-let Encontrado = 0
 let coreografia_part = 0
-coreografia_part += 0
-radio.setGroup(101)
-basic.pause(2000)
-while (!(Encontrado)) {
-    distancia = 0
-    if (distancia < 30) {
-        Encontrado = 1
-    }
-}
-while (Encontrado) {
-    distancia = maqueen.Ultrasonic(PingUnit.Centimeters)
-    if (distancia > 30) {
-        perseguir = 1
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 15)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 15)
-    } else if (perseguir) {
-        perseguir = 0
-        maqueen.motorStop(maqueen.Motors.All)
-    }
-}
+let cont = 0
+radio.setGroup(100)
+basic.showLeds(`
+    . . # # .
+    . # . . .
+    . # . . .
+    . # . . .
+    . . # # .
+    `)
